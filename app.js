@@ -9,33 +9,10 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-
+const storageArray =[];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-const questions = [{
-    name: "name",
-    type: "input",
-    message: "Employee Name"
-},
-{
-    name: "Position",
-    type: "list",
-    choices:["Manager, Engineer, Intern"], 
-    message: " What is your Position?"
-},
-{
-    name: "id",
-    type: "input",
-    message: "What is your ID Number?"
-},
-{
-    name: "Email",
-    type: "input",
-    message: "What is your Email Address?"
-},
-
-];
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
@@ -55,12 +32,100 @@ const questions = [{
 // employee type.
 
 //Ask user if they would like to add a manager, engineer or intern.
-// in the .then of the response trigger another inquirer prompt function based on
-// whether they chose manager , engineer or intern.
-// each function for manager engineer or intern will not only ask standard 
-// employee questions but also , custom questions to the particular role. 
-// Once we recive employee information, use the "new" keyword to create a class
+const questions = [{
+    name: "name",
+    type: "input",
+    message: "Employee Name"
+},
+{
+    name: "position",
+    type: "list",
+    choices:["Manager", "Engineer", "Intern"], 
+    message: " What is your Position?"
+},
+{
+    name: "id",
+    type: "input",
+    message: "What is your ID Number?"
+},
+{
+    name: "email",
+    type: "input",
+    message: "What is your Email Address?"
+},
 
+];
+employeeQuestions()
+function employeeQuestions() {
+inquirer.prompt(questions)
+
+
+// in the .then of the response trigger another inquirer prompt function based on
+.then(function(answers) {
+    // whether they chose manager , engineer or intern.
+if( answers.position ==="Manager"){
+    // execute inquirer manager 
+    managerQuestions(answers)
+} 
+if( answers.position ==="Engineer"){
+    // execute inquirer Engineer function
+};
+if( answers.position ==="Intern"){
+    // execute inquirer Intern function
+}; 
+});
+}
+
+// ask custom questions to the particular role. 
+function managerQuestions(data) {
+// ask for office number with inquirer.prompt
+inquirer.prompt({
+
+        name: "officeNumber",
+        type: "input",
+        message: "What is your Office Number?"
+    
+}) .then(function(response){
+    // Once we recive employee information, use the "new" keyword to create a class
+    // let classInstance = new Engineer(name, id, email)
+let newManager = new Manager(data.name, data.id, data.email, response.officeNumber)
+storageArray.push(newManager)
+anotherEmployee()
+})
+};
+// ask custom questions to the particular role. 
+function engineerQuestions(data) {
+    // ask for GitHub with inquirer.prompt
+    // Once we recive employee information, use the "new" keyword to create a class
+    // let classInstance = new Engineer(name, id, email)
+    };
+
+    // ask custom questions to the particular role. 
+function internQuestions(data) {
+    // ask for school information with inquirer.prompt
+    // Once we recive employee information, use the "new" keyword to create a class
+    // let classInstance = new Engineer(name, id, email)
+    };
+    function anotherEmployee(){
+// Inquirer.prompt to ask if user would like to add another employee
+inquirer.prompt({
+
+    name: "anotherEmployee",
+    type: "input",
+    message: "Would you like to add another Employee?"
+
+}) .then(function(response){
+// if user says yes, then we execute the employeeQuestions function
+if( response.anotherEmployee === "yes"){
+    employeeQuestions()
+} else {
+    console.log(storageArray)
+    fs.writeFile(outputPath, render(storageArray), function(){
+        console.log("wrote to file")
+    })
+}
+})
+    }
 //Imagine we have collected employee data in the response object 
 // let name = answers.name
 // let id = answers.id 
