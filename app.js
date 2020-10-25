@@ -69,9 +69,11 @@ if( answers.position ==="Manager"){
 } 
 if( answers.position ==="Engineer"){
     // execute inquirer Engineer function
+    engineerQuestions(answers)
 };
 if( answers.position ==="Intern"){
     // execute inquirer Intern function
+    internQuestions(answers)
 }; 
 });
 }
@@ -96,13 +98,24 @@ anotherEmployee()
 // ask custom questions to the particular role. 
 function engineerQuestions(data) {
     // ask for GitHub with inquirer.prompt
+    inquirer.prompt({
+        name: "GitHub",
+        type: "input",
+        message: "What is your GitHub address?"
+    })
     // Once we recive employee information, use the "new" keyword to create a class
     // let classInstance = new Engineer(name, id, email)
+    let newEngineer = new Engineer(data.name, data.id, data.email, response.Github)
+    storageArray.push(newEngineer)
+    anotherEmployee()
     };
 
     // ask custom questions to the particular role. 
 function internQuestions(data) {
-    // ask for school information with inquirer.prompt
+    let newIntern = new Intern(data.name, data.id, data.email, response.Github)
+    storageArray.push(newIntern)
+    anotherEmployee()
+     // ask for school information with inquirer.prompt
     // Once we recive employee information, use the "new" keyword to create a class
     // let classInstance = new Engineer(name, id, email)
     };
